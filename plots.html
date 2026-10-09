@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>YoungCat: plot the sample</title>
+  <meta name="description" content="Plot any two parameters of the young exoplanet catalogue.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🪐</text></svg>">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to the plot</a>
+
+  <header class="site-header">
+    <div class="masthead">
+      <div>
+        <p class="wordmark"><a href="./">YoungCat</a></p>
+        <p class="tagline">A catalogue of exoplanets around young stars</p>
+      </div>
+      <nav aria-label="Main">
+        <a href="./">Catalogue</a>
+        <a href="plots.html" aria-current="page">Plots</a>
+        <button type="button" id="theme-toggle" class="theme-toggle" aria-label="Switch colour theme">Auto</button>
+      </nav>
+    </div>
+    <figure class="ruler">
+      <div id="age-ruler" class="ruler-host"></div>
+      <figcaption>Each mark is one planet, placed by the age of its host star. Faded marks are outside the sample being plotted.</figcaption>
+    </figure>
+  </header>
+
+  <main id="main">
+    <div id="status" class="status" role="status"><p>Loading the catalogue…</p></div>
+
+    <section id="plots" class="plots" hidden aria-label="Plot builder">
+      <form id="controls" class="controls" onsubmit="return false">
+        <fieldset>
+          <legend>Planets to plot</legend>
+          <label class="radio"><input type="radio" name="sample" value="all"><span>Whole catalogue</span><small id="sample-all-note"></small></label>
+          <label class="radio"><input type="radio" name="sample" value="filtered"><span>Matching my catalogue filters</span><small id="sample-filtered-note"></small></label>
+          <label class="radio"><input type="radio" name="sample" value="selected"><span>My selection</span><small id="sample-selected-note"></small></label>
+        </fieldset>
+
+        <fieldset>
+          <legend>Quick plots</legend>
+          <div id="presets" class="presets"></div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Axes</legend>
+          <label class="field">x axis<select id="x-col"></select></label>
+          <label class="check"><input type="checkbox" id="log-x"><span>Log x</span></label>
+          <label class="field">y axis<select id="y-col"></select></label>
+          <label class="check"><input type="checkbox" id="log-y"><span>Log y</span></label>
+          <button type="button" class="btn" id="swap-axes">Swap x and y</button>
+        </fieldset>
+
+        <fieldset>
+          <legend>Display</legend>
+          <label class="field">Colour points by<select id="color-col"></select></label>
+          <label class="check"><input type="checkbox" id="show-errors"><span>Show error bars</span></label>
+          <label class="check"><input type="checkbox" id="highlight"><span>Ring my selected planets</span></label>
+        </fieldset>
+      </form>
+
+      <div class="plot-area">
+        <div id="plot" class="plot"></div>
+        <div class="plot-foot">
+          <p id="plot-status" class="count" aria-live="polite"></p>
+          <button type="button" class="btn" id="download-plotted">Download plotted planets</button>
+        </div>
+        <p class="hint">Hover a point for its values; click it to see the full entry. Use the camera icon above the plot to save a PNG.</p>
+        <aside id="planet-card" class="planet-card" hidden aria-live="polite"></aside>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>Maintained by <a href="https://github.com/mbattley">mbattley</a>. Values come from the published literature; check the original papers before using them in your own work.</p>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.35.2/plotly.min.js"></script>
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/plots.js"></script>
+</body>
+</html>
