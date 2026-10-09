@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>YoungCat: catalogue of young exoplanets</title>
+  <meta name="description" content="A sortable, filterable catalogue of exoplanets orbiting young stars.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🪐</text></svg>">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to the catalogue</a>
+
+  <header class="site-header">
+    <div class="masthead">
+      <div>
+        <p class="wordmark"><a href="./">YoungCat</a></p>
+        <p class="tagline"><span class="ac">K</span>atalog of the <span class="ac">Y</span>oung, <span class="ac">T</span>eenage and ma<span class="ac">T</span>uring <span class="ac">E</span>xopla<span class="ac">N</span>ets</p>
+      </div>
+      <nav aria-label="Main">
+        <a href="./">About</a>
+        <a href="catalogue.html" aria-current="page">Catalogue</a>
+        <a href="plots.html">Plots</a>
+        <button type="button" id="theme-toggle" class="theme-toggle" aria-label="Switch colour theme">Auto</button>
+      </nav>
+    </div>
+    <figure class="ruler">
+      <div id="age-ruler" class="ruler-host"></div>
+      <figcaption>Each mark is one planet, placed by the age of its host star. Faded marks are hidden by your filters; highlighted marks are in your selection.</figcaption>
+    </figure>
+  </header>
+
+  <main id="main">
+    <div id="status" class="status" role="status"><p>Loading the catalogue…</p></div>
+
+    <section id="catalogue" hidden aria-label="Planet catalogue">
+      <div class="toolbar">
+        <label class="search">
+          <span class="visually-hidden">Search planet, host or association</span>
+          <input type="search" id="search" placeholder="Search planet, host or association" autocomplete="off" spellcheck="false">
+        </label>
+
+        <label class="check"><input type="checkbox" id="selected-only"><span>Show selected only</span></label>
+
+        <details class="menu">
+          <summary class="btn">Columns</summary>
+          <div class="menu-panel" id="column-list"></div>
+        </details>
+
+        <button type="button" class="btn" id="clear-filters">Clear filters</button>
+        <button type="button" class="btn" id="clear-selection">Clear selection</button>
+
+        <div class="toolbar-end">
+          <button type="button" class="btn" id="download-matching">Download shown</button>
+          <button type="button" class="btn btn-strong" id="download-selected">Download selected</button>
+        </div>
+      </div>
+
+      <div class="meta-row">
+        <p id="count" class="count" aria-live="polite"></p>
+        <details class="help">
+          <summary>How to filter</summary>
+          <div class="help-body">
+            <p>Type in the box under any column heading. Filters on different columns combine.</p>
+            <table class="syntax">
+              <tr><td><code>&gt;10</code> <code>&lt;=3.5</code></td><td>greater than, at most</td></tr>
+              <tr><td><code>10..50</code></td><td>between 10 and 50, inclusive</td></tr>
+              <tr><td><code>=4</code> <code>!=4</code></td><td>equal to, not equal to</td></tr>
+              <tr><td><code>tau</code> <code>!tau</code></td><td>text contains, does not contain</td></tr>
+              <tr><td><code>*</code> <code>!*</code></td><td>has a value, is missing</td></tr>
+            </table>
+            <p>Click a heading to sort; click again to reverse. Shift-click another heading to add a secondary sort. Missing values always sort last.</p>
+            <p>Your filters and selection carry over to the Plots page.</p>
+          </div>
+        </details>
+      </div>
+
+      <div class="table-wrap">
+        <table class="cat" aria-describedby="count">
+          <thead id="thead"></thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+
+      <div class="pager">
+        <button type="button" class="btn" id="prev-page">Previous</button>
+        <span id="page-info"></span>
+        <button type="button" class="btn" id="next-page">Next</button>
+        <label class="page-size">Rows per page
+          <select id="page-size">
+            <option value="25">25</option>
+            <option value="50" selected>50</option>
+            <option value="100">100</option>
+            <option value="0">All</option>
+          </select>
+        </label>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>Maintained by <a href="https://github.com/mbattley">mbattley</a>. Values come from the published literature; check the original papers before using them in your own work.</p>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/catalogue.js"></script>
+</body>
+</html>

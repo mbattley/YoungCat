@@ -3,7 +3,9 @@
 A static website for a catalogue of young exoplanets. It runs entirely in the browser,
 so it can be hosted for free on GitHub Pages with no server or build step.
 
-- `index.html` is the catalogue: search, sort (shift-click for multi-column sorts), filter each
+- `index.html` is the About page that visitors land on. Contact links use `contactEmail` in
+  `assets/js/config.js`, or GitHub issues if that is left empty.
+- `catalogue.html` is the catalogue: search, sort (shift-click for multi-column sorts), filter each
   column, tick planets to build a selection, and download either the filtered rows or the selection as CSV.
 - `plots.html` plots any two numeric columns, with quick buttons for mass–radius, radius–age and
   mass–age. It can plot the whole catalogue, the rows matching the catalogue filters, or just the
@@ -14,13 +16,15 @@ Filters and selections are kept in the visitor's browser, so they carry over bet
 ## Files
 
 ```
-index.html              catalogue page
+index.html              About / landing page
+catalogue.html          catalogue page
 plots.html              plotting page
 data/young_planets.csv  the catalogue (demo values for now; replace with yours)
 assets/js/config.js     column names, labels, units, error columns, plot presets
 assets/js/data.js       shared loading, filtering and formatting
 assets/js/catalogue.js  table behaviour
 assets/js/plots.js      plot behaviour (Plotly)
+assets/js/home.js       About page (age ruler, planet count, contact links)
 assets/css/style.css    styling, light and dark themes
 ```
 
