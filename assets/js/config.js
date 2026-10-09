@@ -21,7 +21,7 @@ window.YC_CONFIG = {
   siteName: 'YoungCat',
 
   // Used on the About page. Leave contactEmail empty to send people to GitHub issues instead.
-  contactEmail: '',
+  contactEmail: 'matbatt@gmail.com',
   repoUrl: 'https://github.com/mbattley/YoungCat',
   csvPath: 'data/young_planets.csv',
   idColumn: 'pl_name',
