@@ -83,7 +83,11 @@
   </footer>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.35.2/plotly.min.js"></script>
+  <script src="https://cdn.plot.ly/plotly-2.35.3.min.js" charset="utf-8"></script>
+  <script>
+    // Backup copy of Plotly if the main CDN is unreachable
+    window.Plotly || document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.35.3/plotly.min.js" charset="utf-8"><\/script>');
+  </script>
   <script src="assets/js/config.js"></script>
   <script src="assets/js/data.js"></script>
   <script src="assets/js/plots.js"></script>

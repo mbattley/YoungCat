@@ -3,6 +3,11 @@
   const $ = id => document.getElementById(id);
   Y.initTheme();
 
+  if (!window.Plotly) {
+    $('status').innerHTML = '<p class="error">The plotting library (Plotly) could not be loaded, so plots cannot be drawn. Check your connection or any content blocker, then reload the page.</p>';
+    return;
+  }
+
   let data;
   try {
     data = await Y.loadCatalogue();
@@ -115,6 +120,16 @@
   }
 
   function draw() {
+    try {
+      return drawPlot();
+    } catch (err) {
+      console.error(err);
+      $('plot-status').innerHTML = `<span class="error">This plot could not be drawn: ${Y.escapeHTML(err.message)}</span>`;
+      return Promise.resolve();
+    }
+  }
+
+  function drawPlot() {
     syncControls();
     Y.store(Y.KEYS.plot, state);
 
