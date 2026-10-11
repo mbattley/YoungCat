@@ -48,6 +48,7 @@ window.YC_CONFIG = {
     { key: 'pl_bmassj',       label: 'Mass',             unit: 'MJ',  type: 'number', err: ['pl_bmassjerr1', 'pl_bmassjerr2'], lim: 'pl_bmassjlim', log: true, visible: true },
     { key: 'pl_bmassprov',    label: 'Mass type',        type: 'string' },
     { key: 'pl_orbeccen',     label: 'Eccentricity',     type: 'number', err: ['pl_orbeccenerr1', 'pl_orbeccenerr2'], lim: 'pl_orbeccenlim', visible: true },
+    { key: 'pl_projobliq',    label: 'Proj. Obliquity',  type: 'number', err: ['pl_projobliqerr1', 'pl_projobliqerr2'], visible: true },
     { key: 'pl_eqt',          label: 'Equilibrium temp', unit: 'K',   type: 'number', err: ['pl_eqterr1', 'pl_eqterr2'], lim: 'pl_eqtlim' },
     { key: 'st_teff',         label: 'Stellar Teff',     unit: 'K',   type: 'number', err: ['st_tefferr1', 'st_tefferr2'], lim: 'st_tefflim' },
     { key: 'st_rad',          label: 'Stellar radius',   unit: 'R☉',  type: 'number', err: ['st_raderr1', 'st_raderr2'], lim: 'st_radlim', visible: true },
