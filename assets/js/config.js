@@ -56,7 +56,7 @@ window.YC_CONFIG = {
     { key: 'discoverymethod', label: 'Discovery method', type: 'string' },
     { key: 'disc_year',       label: 'Year',             type: 'number', integer: true },
     { key: 'pl_refname',      label: 'Reference',        type: 'ref' },
-    { key: 'Bouma24_Kepler_flag', label: 'Kepler sample',   type: 'string', map: { '1': 'Yes', '0': 'No' }, visible: true },
+    { key: 'Bouma24_Kepler_flag', label: 'Bouma+24 Kepler sample',   type: 'string', map: { '1': 'Yes', '0': 'No' }, visible: true },
 
     // Available from the Columns menu
     { key: 'Environment',     label: 'Environment',      type: 'string', visible: false },
