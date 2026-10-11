@@ -66,6 +66,7 @@ window.YC_CONFIG = {
     { key: 'pl_insol',        label: 'Insolation',       unit: 'S⊕',  type: 'number', err: ['pl_insolerr1', 'pl_insolerr2'], lim: 'pl_insollim', log: true, visible: false },
     { key: 'pl_rad_percent',  label: 'Radius precision', unit: '%',   type: 'number', visible: false },
     { key: 'pl_mass_percent', label: 'Mass precision',   unit: '%',   type: 'number', visible: false },
+    { key: 'st_age_percerr',  label: 'Age precision',   unit: '%',   type: 'number', visible: false },
     { key: 'ttv_flag',        label: 'TTVs',             type: 'string', map: { '1': 'Yes', '0': 'No' }, visible: false },
     { key: 'pl_controv_flag', label: 'Controversial',    type: 'string', map: { '1': 'Yes', '0': 'No' }, visible: false },
     { key: 'st_spectype',     label: 'Spectral type',    type: 'string', visible: false },
