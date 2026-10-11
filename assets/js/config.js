@@ -55,7 +55,7 @@ window.YC_CONFIG = {
     { key: 'pl_refname',      label: 'Reference',        type: 'ref' },
 
     // Available from the Columns menu
-    { key: 'Luke_Kepler_flag', label: 'Kepler sample',   type: 'string', map: { '1': 'Yes', '0': 'No' }, visible: false },
+    { key: 'Bouma24_Kepler_flag', label: 'Kepler sample',   type: 'string', map: { '1': 'Yes', '0': 'No' }, visible: true },
     { key: 'st_age_upper',    label: 'Age upper bound',  unit: 'Gyr', type: 'number', visible: false },
     { key: 'pl_orbsmax',      label: 'Semi-major axis',  unit: 'au',  type: 'number', err: ['pl_orbsmaxerr1', 'pl_orbsmaxerr2'], lim: 'pl_orbsmaxlim', log: true, visible: false },
     { key: 'pl_orbeccen',     label: 'Eccentricity',     type: 'number', err: ['pl_orbeccenerr1', 'pl_orbeccenerr2'], lim: 'pl_orbeccenlim', visible: false },
