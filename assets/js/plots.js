@@ -25,7 +25,7 @@
   const defaults = {
     sample: 'all', x: first.x, y: first.y,
     logx: !!colBy[first.x]?.log, logy: !!colBy[first.y]?.log,
-    color: '', errors: true, highlight: true, own: true
+    color: '', errors: true, highlight: true, own: true, ownColor: false
   };
   const state = { ...defaults, ...Y.recall(Y.KEYS.plot, {}) };
   if (!colBy[state.x]) state.x = defaults.x;
@@ -60,6 +60,9 @@
     $('highlight').checked = state.highlight;
     $('highlight').disabled = state.sample === 'selected';
     $('show-own').checked = state.own;
+    $('own-color').checked = state.ownColor;
+    $('own-color').disabled = !state.own || !state.color;
+    $('own-color-note').hidden = !!state.color;
     document.querySelectorAll('.preset').forEach(b => {
       const p = presets.find(q => q.id === b.dataset.id);
       b.setAttribute('aria-pressed', p.x === state.x && p.y === state.y);
@@ -68,8 +71,9 @@
 
   $('controls').addEventListener('change', e => {
     const t = e.target;
-    if (t.closest('#own-box') && t.id !== 'show-own') return;   // the entry form redraws on save
+    if (t.closest('#own-box') && t.id !== 'show-own' && t.id !== 'own-color') return;   // the entry form redraws on save
     if (t.id === 'show-own') state.own = t.checked;
+    if (t.id === 'own-color') state.ownColor = t.checked;
     if (t.name === 'sample') state.sample = t.value;
     if (t.id === 'x-col') { state.x = t.value; state.logx = !!colBy[t.value].log; }
     if (t.id === 'y-col') { state.y = t.value; state.logy = !!colBy[t.value].log; }
@@ -334,13 +338,26 @@
       ...extra
     });
 
+    let ownShown = [], ownMissing = [];
+    if (state.own && own.length) {
+      const ownRows = own.map(ownRow);
+      ownShown = ownRows.filter(r => ok(r.v[xc.key], state.logx) && ok(r.v[yc.key], state.logy));
+      ownMissing = ownRows.filter(r => !ownShown.includes(r));
+    }
+    // Your planets share the catalogue's colour scale when asked to (and when they have a value for it)
+    const cval = r => cc.log ? Math.log10(r.v[cc.key]) : r.v[cc.key];
+    const hasC = r => cc && r.v[cc.key] !== null && (!cc.log || r.v[cc.key] > 0);
+    const ownColored = cc && state.ownColor ? ownShown.filter(hasC) : [];
+
     const traces = [];
     const marker = { size: 9, line: { width: 1, color: surface } };
     const sym = pts => pts.map(r => symbolFor(r, xc, yc));
     if (cc) {
-      const withC = plotted.filter(r => r.v[cc.key] !== null && (!cc.log || r.v[cc.key] > 0));
+      const withC = plotted.filter(hasC);
       const without = plotted.filter(r => !withC.includes(r));
-      const cvals = withC.map(r => cc.log ? Math.log10(r.v[cc.key]) : r.v[cc.key]);
+      const cvals = withC.map(cval);
+      const allC = cvals.concat(ownColored.map(cval));
+      if (allC.length) Object.assign(marker, { cmin: Math.min(...allC), cmax: Math.max(...allC) });
       traces.push(traceFor(withC, {
         name: Y.columnTitle(cc), showlegend: false,
         marker: { ...marker, symbol: sym(withC), color: cvals, colorscale: 'Viridis',
@@ -363,29 +380,32 @@
       }));
     }
 
-    let ownShown = [], ownMissing = [];
-    if (state.own && own.length) {
-      const ownRows = own.map(ownRow);
-      ownShown = ownRows.filter(r => ok(r.v[xc.key], state.logx) && ok(r.v[yc.key], state.logy));
-      ownMissing = ownRows.filter(r => !ownShown.includes(r));
+    if (ownShown.length) {
       const ownColor = css('--own');
-      const ownErr = col => {
+      const ownErr = (pts, col) => {
         if (!state.errors) return undefined;
-        const up = ownShown.map(r => r.lim[col.key] ? null : (r.e[col.key] || [])[0] ?? null);
-        const lo = ownShown.map(r => r.lim[col.key] ? null : (r.e[col.key] || [])[1] ?? null);
+        const up = pts.map(r => r.lim[col.key] ? null : (r.e[col.key] || [])[0] ?? null);
+        const lo = pts.map(r => r.lim[col.key] ? null : (r.e[col.key] || [])[1] ?? null);
         if (!up.some(v => v !== null) && !lo.some(v => v !== null)) return undefined;
         return { type: 'data', symmetric: false, array: up, arrayminus: lo, color: ownColor, thickness: 1.5, width: 4 };
       };
-      if (ownShown.length) traces.push({
+      const ownTrace = (pts, mk) => ({
         type: 'scatter', mode: 'markers+text', name: 'Your planets', showlegend: false, cliponaxis: false,
-        x: ownShown.map(r => r.v[xc.key]), y: ownShown.map(r => r.v[yc.key]),
-        text: ownShown.map(r => r.id), textposition: 'top center', textfont: { color: ownColor, size: 12 },
-        customdata: ownShown.map(r => [r.id, fmt(r, xc), fmt(r, yc), '', 'own']),
-        hovertemplate: `<b>%{customdata[0]}</b> (your planet)<br>${esc(xc.label)}: %{customdata[1]}<br>${esc(yc.label)}: %{customdata[2]}<extra></extra>`,
-        error_x: ownErr(xc), error_y: ownErr(yc),
-        marker: { size: 17, color: ownColor, line: { width: 1, color: surface },
-          symbol: ownShown.map(r => { const s = symbolFor(r, xc, yc); return s === 'circle' ? 'star' : s; }) }
+        x: pts.map(r => r.v[xc.key]), y: pts.map(r => r.v[yc.key]),
+        text: pts.map(r => r.id), textposition: 'top center', textfont: { color: ownColor, size: 12 },
+        customdata: pts.map(r => [r.id, fmt(r, xc), fmt(r, yc), cc ? fmt(r, cc) : '', 'own']),
+        hovertemplate: `<b>%{customdata[0]}</b> (your planet)<br>${esc(xc.label)}: %{customdata[1]}<br>${esc(yc.label)}: %{customdata[2]}` +
+          (cc ? `<br>${esc(cc.label)}: %{customdata[3]}` : '') + '<extra></extra>',
+        error_x: ownErr(pts, xc), error_y: ownErr(pts, yc),
+        marker: { size: 17, symbol: pts.map(r => { const s = symbolFor(r, xc, yc); return s === 'circle' ? 'star' : s; }), ...mk }
       });
+      const ownPlain = ownShown.filter(r => !ownColored.includes(r));
+      if (ownPlain.length) traces.push(ownTrace(ownPlain, { color: ownColor, line: { width: 1, color: surface } }));
+      // Filled from the shared colour scale, with a thick outline in the "your planets" colour
+      if (ownColored.length) traces.push(ownTrace(ownColored, {
+        size: 19, color: ownColored.map(cval), colorscale: 'Viridis', cmin: marker.cmin, cmax: marker.cmax,
+        showscale: false, line: { width: 2.5, color: ownColor }
+      }));
       // Legend entry always shows a star, even if the planet itself is drawn as a limit triangle
       if (ownShown.length) traces.push({ type: 'scatter', mode: 'markers', x: [null], y: [null], hoverinfo: 'skip',
         name: 'Your planets', marker: { size: 13, symbol: 'star', color: ownColor } });
@@ -421,6 +441,8 @@
       ? 'Your selection is empty. Tick planets in the catalogue to build one.'
       : 'No planets match your catalogue filters. Adjust them in the catalogue.';
     if (ownShown.length) msg += ` Plus ${ownShown.length === 1 ? ownShown[0].id : ownShown.length + ' of your planets'}.`;
+    const ownUncolored = cc && state.ownColor ? ownShown.filter(r => !ownColored.includes(r)) : [];
+    if (ownUncolored.length) msg += ` No ${cc.label.toLowerCase()} value to colour ${ownUncolored.map(r => r.id).join(', ')} by.`;
     if (ownMissing.length) {
       const why = r => [[xc, state.logx], [yc, state.logy]].filter(([c, log]) => !ok(r.v[c.key], log)).map(([c]) => c.label.toLowerCase()).join(' or ');
       msg += ` Not shown: ${ownMissing.map(r => `${r.id} (no ${why(r)} value)`).join(', ')}.`;

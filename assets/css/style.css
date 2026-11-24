@@ -224,6 +224,9 @@ th.num .filter { text-align: right; }
 .own-list li.is-editing { font-weight: 700; }
 .own-saved { padding-top: 0.55rem; border-top: 1px solid var(--rule); margin-bottom: 0.55rem; }
 .own-star { color: var(--own); }
+.own-note { color: var(--muted); font-size: var(--step--1); margin-top: -0.3rem; padding-left: 1.45rem; }
+#own-saved-wrap { display: grid; gap: 0.55rem; }
+#own-saved-wrap[hidden] { display: none; }
 .own-msg { margin: 0; font-size: var(--step--1); color: var(--muted); }
 .own-msg:empty { display: none; }
 .own-msg.is-error { color: var(--danger); }
