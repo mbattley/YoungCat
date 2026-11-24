@@ -37,6 +37,16 @@ assets/css/style.css    styling, light and dark themes
    and chosen on the plots page.
 3. Commit and push. The site updates within a minute or two.
 
+## After changing the CSS or JavaScript
+
+Each page links its stylesheet and scripts with a version tag, e.g. `assets/js/plots.js?v=2026-11-24`.
+When you edit anything in `assets/`, change that tag in all three HTML files (today's date is fine) so
+visitors' browsers fetch the new files instead of an old cached copy:
+
+```
+sed -i '' -E 's/\?v=[0-9-]+/?v=NEW-DATE/' index.html catalogue.html plots.html
+```
+
 ## Publishing on GitHub Pages
 
 1. Create a repository, e.g. `github.com/mbattley/youngcat`, and push these files to the `main` branch.
