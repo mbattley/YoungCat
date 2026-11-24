@@ -10,6 +10,7 @@
   --mark-soft: rgba(201, 118, 20, 0.10);
   --hover: rgba(43, 84, 168, 0.06);
   --danger: #b3261e;
+  --own: #b4286f;         /* the user's own planets on the plots */
 
   --font-display: 'Newsreader', 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
   --font-ui: 'Atkinson Hyperlegible', 'Segoe UI', system-ui, -apple-system, sans-serif;
@@ -31,13 +32,13 @@
   :root:not([data-theme="light"]) {
     --bg: #0f1520; --surface: #172030; --ink: #e4e8f0; --muted: #97a1b3; --rule: #2a3446;
     --accent: #86a8ee; --mark: #f2b04f; --mark-soft: rgba(242, 176, 79, 0.12);
-    --hover: rgba(134, 168, 238, 0.08); --danger: #f2877f; color-scheme: dark;
+    --hover: rgba(134, 168, 238, 0.08); --danger: #f2877f; --own: #f283bd; color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
   --bg: #0f1520; --surface: #172030; --ink: #e4e8f0; --muted: #97a1b3; --rule: #2a3446;
   --accent: #86a8ee; --mark: #f2b04f; --mark-soft: rgba(242, 176, 79, 0.12);
-  --hover: rgba(134, 168, 238, 0.08); --danger: #f2877f; color-scheme: dark;
+  --hover: rgba(134, 168, 238, 0.08); --danger: #f2877f; --own: #f283bd; color-scheme: dark;
 }
 
 *, *::before, *::after { box-sizing: inherit; }
@@ -207,6 +208,29 @@ th.num .filter { text-align: right; }
 .planet-card dl { display: grid; grid-template-columns: max-content 1fr; gap: 0.2rem 1rem; margin: 0 0 0.8rem; font-size: 0.9375rem; }
 .planet-card dt { color: var(--muted); }
 .planet-card dd { margin: 0; font-variant-numeric: tabular-nums; }
+
+/* ---------- the user's own planets ---------- */
+.own-intro { margin: 0; color: var(--muted); font-size: var(--step--1); }
+.field input[type="text"] { color: var(--ink); width: 100%; }
+.own-entry { display: grid; gap: 0.55rem; padding: 0.6rem; border: 1px dashed var(--rule); border-radius: var(--radius); }
+.own-nums { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.4rem; }
+.own-entry .btn { justify-self: start; }
+.own-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.3rem; font-size: 0.875rem; }
+.own-list:empty { display: none; }
+.own-list li { display: flex; align-items: baseline; gap: 0.5rem; }
+.own-list .grow { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.own-list .val { font-variant-numeric: tabular-nums; }
+.own-list button.link { font-size: var(--step--1); }
+.own-list li.is-editing { font-weight: 700; }
+.own-saved { padding-top: 0.55rem; border-top: 1px solid var(--rule); margin-bottom: 0.55rem; }
+.own-star { color: var(--own); }
+.own-msg { margin: 0; font-size: var(--step--1); color: var(--muted); }
+.own-msg:empty { display: none; }
+.own-msg.is-error { color: var(--danger); }
+.own-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+.planet-card.is-own { border-left-color: var(--own); }
+.planet-card .note { color: var(--muted); font-size: var(--step--1); }
+.card-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; }
 
 /* ---------- footer ---------- */
 .site-footer { border-top: 1px solid var(--rule); padding-top: 1rem; padding-bottom: 2rem; color: var(--muted); font-size: var(--step--1); }

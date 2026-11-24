@@ -8,7 +8,8 @@
     search: 'youngcat:search',
     columns: 'youngcat:columns',
     plot: 'youngcat:plot',
-    theme: 'youngcat:theme'
+    theme: 'youngcat:theme',
+    own: 'youngcat:own-planets'
   };
 
   /* ---------- local storage (shares state between the two pages) ---------- */

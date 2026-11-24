@@ -65,6 +65,36 @@
           <label class="check"><input type="checkbox" id="show-errors"><span>Show error bars</span></label>
           <label class="check"><input type="checkbox" id="highlight"><span>Ring my selected planets</span></label>
         </fieldset>
+
+        <fieldset id="own-box" class="own">
+          <legend>Add your own planets</legend>
+          <p class="own-intro">Put a candidate or newly found planet on the plots alongside the catalogue. It is kept in this browser only and never uploaded.</p>
+          <label class="field">Planet name<input type="text" id="own-name" placeholder="e.g. TOI-1234 b" autocomplete="off" spellcheck="false"></label>
+          <div class="own-entry">
+            <label class="field">Parameter<select id="own-param"></select></label>
+            <div class="own-nums">
+              <label class="field">Value<input type="text" id="own-val" autocomplete="off"></label>
+              <label class="field">+ error<input type="text" id="own-errp" autocomplete="off" placeholder="opt."></label>
+              <label class="field">− error<input type="text" id="own-errm" autocomplete="off" placeholder="opt."></label>
+            </div>
+            <label class="field">Value is<select id="own-lim">
+              <option value="0">A measurement</option>
+              <option value="1">An upper limit</option>
+              <option value="-1">A lower limit</option>
+            </select></label>
+            <button type="button" class="btn" id="own-add-param">Add this value</button>
+          </div>
+          <ul id="own-draft" class="own-list" aria-label="Values entered for this planet"></ul>
+          <p id="own-msg" class="own-msg" aria-live="polite"></p>
+          <div class="own-actions">
+            <button type="button" class="btn btn-strong" id="own-save">Add planet to plots</button>
+            <button type="button" class="btn" id="own-clear">Clear</button>
+          </div>
+          <div id="own-saved-wrap" hidden>
+            <ul id="own-saved" class="own-list own-saved" aria-label="Your planets"></ul>
+            <label class="check"><input type="checkbox" id="show-own"><span>Show my planets on the plot</span></label>
+          </div>
+        </fieldset>
       </form>
 
       <div class="plot-area">
